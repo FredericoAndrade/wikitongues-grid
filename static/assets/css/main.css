@@ -1,0 +1,90 @@
+html {
+  width: 100%;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+body {
+  margin: 0;
+  height: 100%;
+}
+#nav {
+  border-radius: 0 0 50% 50%;
+  float: left;
+  width: 48px;
+  height: 48px;
+  position: absolute;
+  margin: 0 1rem;
+  overflow: hidden;
+}
+#nav img {
+  width: 100%;
+}
+#wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#wrapper #title {
+  position: absolute;
+  bottom: 2rem;
+  height: 48px;
+  min-width: 24px;
+  padding: 14px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 0 24px 24px 0;
+}
+#canvas {
+  width: 100%;
+  height: 100%;
+  margin: 0% 0 0 0%;
+  background-color: cornflowerblue;
+}
+#canvas .cell {
+  float: left;
+}
+#canvas .cell .nucleus {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: white;
+  color: white;
+  font-size: 2rem;
+  font-weight: bolder;
+  background-size: cover;
+  background-position: center;
+}
+#tool {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color:  white;
+  text-shadow: 0 0 4px  black;
+}
+#tool input {
+  display: block;
+}
+#modalWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  padding: 2rem;
+}
+
+#modalWrapper #modal {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+}
+
+#modalWrapper #modal iframe {
+  width: 100%;
+  height: 100%;
+}
