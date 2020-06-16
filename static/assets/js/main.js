@@ -10,6 +10,7 @@ class Grid {
     this.columns = columns,
     this.rows = rows;
     this.gutter = gutter;
+    this.data = [];
   };
   get cells() {
     return this.columns * this.rows;
@@ -66,6 +67,8 @@ function updateGrid() {
 
 function addCell(i) {
   const cell = new Cell();
+  const prevData = grid.data;
+  const newData = prevData.push(cell);
   canvas.append(`
     <div class="cell"
     data="${cell.key}"
@@ -157,15 +160,11 @@ $(document).on("click", ".nucleus", function(e) {
 });
 
 $(document).on("keydown", function(event) {
- if (event.key == "Escape") {
-   $("#wrapper #modalWrapper").remove()
- }
+ event.key === "Escape" ? $("#wrapper #modalWrapper").remove() : undefined
 });
 
 $("#wrapper").click(function(e) {
-  if(e.target.id === "modalWrapper") {
-    $("#wrapper #modalWrapper").remove();
-  };
+  e.target.id === "modalWrapper" ? $("#wrapper #modalWrapper").remove() : undefined
 });
 $("#close").click(function(e) {
   $("#tool").toggleClass("hidden")
@@ -173,7 +172,12 @@ $("#close").click(function(e) {
 $("#menu").click(function(e) {
   $("#tool").toggleClass("hidden")
 })
-
+$("#details").click(function(e) {
+  const gridData = grid.data.map(p => `<li><p>${p.key}</p></li>`).join('')
+  $("#gridSize").parent().after(`
+    <ol id="gridData">${gridData}</ol>
+    `)
+})
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // ||| DIAGNOSTICS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
