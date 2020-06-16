@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --watch",
     "build": "webpack",
-    // "start": "node -r dotenv/config app.js"
     "start": "node app.js"
   },
   "author": "https://github.com/FredericoAndrade",
