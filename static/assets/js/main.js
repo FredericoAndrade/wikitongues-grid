@@ -5,8 +5,6 @@ const data = require("./data.json");
 let availableData = data;
 let usedData = [];
 
-batch.batch(5)
-
 class Grid {
   constructor(columns, rows, gutter) {
     this.columns = columns,
