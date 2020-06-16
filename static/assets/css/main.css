@@ -42,6 +42,7 @@ body {
   height: 100%;
   margin: 0% 0 0 0%;
   background-color: cornflowerblue;
+  opacity: 1;
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 #canvas:hover .cell {
@@ -198,6 +199,7 @@ body {
   right: 0;
   background: rgba(0,0,0,0.6);
   padding: 2rem;
+  z-index: 2;
 }
 
 #modalWrapper #modal {

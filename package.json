@@ -1,6 +1,6 @@
 {
-  "name": "grid",
-  "version": "1.0.0",
+  "name": "Wikitongues Grid",
+  "version": "0.1.0",
   "description": "",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "webpack",
     "start": "node -r dotenv/config app.js"
   },
-  "author": "",
+  "author": "https://github.com/FredericoAndrade",
   "license": "ISC",
   "dependencies": {
     "airtable": "^0.7.2",
@@ -27,5 +27,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
     "dotenv-webpack": "^1.8.0"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
