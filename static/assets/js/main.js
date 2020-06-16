@@ -5,6 +5,8 @@ const data = require("./data.json");
 let availableData = data;
 let usedData = [];
 
+batch.batch(5)
+
 class Grid {
   constructor(columns, rows, gutter) {
     this.columns = columns,
@@ -17,7 +19,7 @@ class Grid {
 };
 
 class Cell {
-  constructor(i) {
+  constructor() {
     this.datum = getRandomCell();
     this.title = this.datum.title;
     this.key = this.datum.id;
@@ -29,7 +31,7 @@ class Cell {
   };
 };
 
-const grid = new Grid(6,4,2);
+const grid = new Grid(4,3,2);
 
 let canvas = $("#canvas"),
 height = canvas.innerHeight(),
@@ -101,12 +103,12 @@ function removeCells() {
 function getRandomCell() {
   const index = Math.floor(Math.random()*availableData.length),
   cell = availableData[index];
-
   usedData.push(cell);
   availableData.splice(index,1);
 
   return cell;
-}
+};
+
 function getRandomColor() {
   const letters = "0123456789ABCDEF";
   let color = "#";
@@ -140,7 +142,7 @@ $("input").change(function(e){
   grid[e.target.id] = Number(this.value);
   updateGrid();
   $(".nucleus").css("border-width",`${grid.gutter}px`);
-  document.querySelector("#gridSize td span").textContent = grid.cells;
+  $("input#gridSize").val(grid.cells);
 })
 
 $(document).on("mouseover", ".cell", function(e) {
@@ -167,6 +169,12 @@ $("#wrapper").click(function(e) {
     $("#wrapper #modalWrapper").remove();
   };
 });
+$("#close").click(function(e) {
+  $("#tool").toggleClass("hidden")
+})
+$("#menu").click(function(e) {
+  $("#tool").toggleClass("hidden")
+})
 
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // ||| DIAGNOSTICS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -175,5 +183,4 @@ $("#wrapper").click(function(e) {
 $("input#columns").val(grid.columns);
 $("input#rows").val(grid.rows);
 $("input#gutter").val(grid.gutter);
-$("#diagnostics").append(`<tr id="gridSize"><td>Grid Size: <span>${grid.cells}</span></td></tr>`);
-
+$("input#gridSize").val(grid.cells);
