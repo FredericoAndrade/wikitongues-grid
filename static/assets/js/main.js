@@ -30,7 +30,7 @@ class Cell {
   };
 };
 
-const grid = new Grid(4,3,2);
+const grid = new Grid('',3,2);
 
 let canvas = $("#canvas"),
 height = canvas.innerHeight(),
@@ -42,6 +42,12 @@ width = canvas.innerWidth();
 
 ( //Render Grid
   function() {
+    let mql = window.matchMedia('(max-width: 600px)');
+    if (mql.matches) {
+      grid.columns = 1;
+    } else {
+      grid.columns = 4;
+    }
     for (var i = 0; i <= grid.cells -1; i++) {
       addCell(i);
     };
