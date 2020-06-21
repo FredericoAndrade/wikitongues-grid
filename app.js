@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var path = require("path");
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 var batch = require("./static/assets/js/batch.js");
 
 var port = process.env.PORT || 3000;
