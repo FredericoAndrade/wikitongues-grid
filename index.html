@@ -66,14 +66,17 @@
             <input type="number" id="rows" name="rowsInput" min="1" step="1">
           </label>
           <label>
-            Gutter
-            <input type="number" id="gutter" name="gutterInput" min="0" step="1">
+            <span>Border</span>
+            <input type="number" id="border" name="borderInput" min="0" step="1">
+            <span class="borderColorContainer">
+              <button class="borderColor" id="black"></button>
+              <button class="borderColor" id="white"></button>
+            </span>
           </label>
           <label>
             Grid Size
             <input type="number" id="gridSize" name="gridSizeInput" min="0" step="1" disabled>
           </label>
-          <button id="refreshAllCells">Refresh</button>
           <div id="metadata">
             <p><span>Show</span> Metadata</p>
           </div>

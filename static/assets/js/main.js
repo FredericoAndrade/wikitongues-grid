@@ -7,10 +7,10 @@ let usedData = [];
 let latest = [];
 
 class Grid {
-  constructor(columns, rows, gutter) {
+  constructor(columns, rows, border) {
     this.columns = columns,
     this.rows = rows;
-    this.gutter = gutter;
+    this.border = border;
     this.data = [];
   };
   get cells() {
@@ -91,7 +91,7 @@ function addCell(obj) {
     >
       <div class="nucleus"
         style="
-        border-width:${grid.gutter}px;
+        border-width:${grid.border}px;
         background-image:url('${cell.image}');
         "
       >
@@ -177,7 +177,7 @@ window.onresize = reportWindowSize;
 $("input").change(function(e){
   grid[e.target.id] = Number(this.value);
   updateGrid();
-  $(".nucleus").css("border-width",`${grid.gutter}px`);
+  $(".nucleus").css("border-width",`${grid.border}px`);
   $("input#gridSize").val(grid.cells);
 })
 
@@ -207,14 +207,15 @@ $("#close").click(function(e) {
 $("#menu").click(function(e) {
   $("#tool").toggleClass("hidden")
 })
-$("#refreshAllCells").click(function(e){
-  refreshAllCells()
-})
 $("#random").click(function(e){
   refreshAllCells()
 })
 $("#latest").click(function(e){
   setLatestData()
+})
+$(".borderColor").click(function(e){
+  $("#canvas").css("border-color",e.target.id)
+  $(".nucleus").css("border-color",e.target.id)
 })
 $("#details").click(function(e) {
   const gridData = grid.data.map(p => `<li><p>${p.key}</p></li>`).join('')
@@ -222,11 +223,12 @@ $("#details").click(function(e) {
     <ol id="gridData">${gridData}</ol>
     `)
 })
+$()
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // ||| DIAGNOSTICS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // Add column and row values
 $("input#columns").val(grid.columns);
 $("input#rows").val(grid.rows);
-$("input#gutter").val(grid.gutter);
+$("input#border").val(grid.border);
 $("input#gridSize").val(grid.cells);
