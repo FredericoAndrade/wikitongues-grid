@@ -30,6 +30,8 @@
           <div id="canvas">
           </div>
           <div id="title"></div>
+          <button id="latest">latest</button>
+          <button id="random">random</button>
           <div id="menu">
             <span class="group">
               <span class="element"></span>
@@ -45,11 +47,19 @@
             <span class="background"></span>
           </div>
           <label>
-            Columns
+            <span class="iconContainer">
+              <span class="icon column"></span>
+              <span class="icon column"></span>
+              Columns
+            </span>
             <input type="number" id="columns" name="columnsInput" min="1" step="1">
           </label>
           <label>
-            Rows
+            <span class="iconContainer">
+              <span class="icon row"></span>
+              <span class="icon row"></span>
+              Rows
+            </span>
             <input type="number" id="rows" name="rowsInput" min="1" step="1">
           </label>
           <label>
@@ -60,6 +70,7 @@
             Grid Size
             <input type="number" id="gridSize" name="gridSizeInput" min="0" step="1" disabled>
           </label>
+          <button id="refreshAllCells">Refresh</button>
           <div id="metadata">
             <p><span>Show</span> Metadata</p>
           </div>

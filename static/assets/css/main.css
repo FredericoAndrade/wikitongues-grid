@@ -157,7 +157,13 @@ body {
   font-size: 1.25rem;
   padding: .3rem;
   box-sizing: border-box;
+  background: #eaecee;
+  border-radius: 4px;
+  border: none;
   width: 100%;
+}
+#tool input:disabled  {
+  color: #929eaa;
 }
 #tool h2 {
   float: left;
@@ -180,6 +186,49 @@ li p{
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+#refreshAllCells {
+  border: none;
+  padding: 11px;
+  border-radius: 4px;
+  margin: auto;
+  display: block;
+  background: #eaecee;
+  cursor: pointer;
+}
+.iconContainer {
+  padding: 2px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+span.icon {
+  background: #eaecee;
+  border: 1px solid #d4d9dd;
+  display: block;
+  float: left;
+  margin: 1px;
+  border-radius: 1px;
+}
+span.icon.column {
+  height: 11px;
+  width: 4px;
+}
+span.icon.row {
+  height: 4px;
+  width: 11px;
+  clear: left;
+}
+span.icon.column:last-of-type,
+span.icon.row:last-of-type {
+  margin-right: 4px;
+}
+#latest, #random {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+#random {
+  right: 40px;
 }
 #close{
   display: inline-block;

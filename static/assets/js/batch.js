@@ -1,11 +1,14 @@
 const batch = (max, single) => {
   var Airtable = require('airtable');
   var base = new Airtable({apiKey: process.env.APIKEY}).base(process.env.BASE);
-  var payload = []
+  var payload = [];
+  var fs = require('fs');
+
 
   base('🍩 Oral Histories').select({
     maxRecords: max,
-    view: ".LOCMetadataView",
+    view: "FredsTestView",
+    sort: [{field: "Youtube Publish Date", direction: "desc"}],
     // cellFormat: "string",
     // timeZone: "America/New_York",
     // userLocale: "en-ca",
@@ -15,12 +18,13 @@ const batch = (max, single) => {
 
     records.forEach(function(record) {
       const img = record.fields["Raw Thumbnail"]
-      const thumbnail = img != undefined ? img[0].thumbnails : undefined ;
-      const id = record.fields["IDv2"]
+      const thumbnail = img != undefined ? img[0].thumbnails : img ;
+      const thumbnail_url = thumbnail != undefined ? thumbnail.large.url : thumbnail ;
+      const id = record.fields["Identifier"]
       const yt = record.fields["Youtube ID"]
       const title = record.fields["Title"]
-      const test = {id:id,img:thumbnail,yt:yt}
-      payload.push(test)
+      const object = {id:id,title:title,youtube:yt,img:thumbnail_url}
+      payload.push(object)
     });
 
     // To fetch the next page of records, call `fetchNextPage`.
@@ -28,8 +32,14 @@ const batch = (max, single) => {
     // If there are no more records, `done` will get called.
 
     fetchNextPage();
-    console.log(payload)
+
+    let data = JSON.stringify(payload);
+    fs.writeFileSync("static/assets/js/data.json", data, function (err) {
+      if (err) return console.log(err);
+    })
+
     return payload
+
   }, function done(err) {
     if (err) { console.error(err); return; }
   });

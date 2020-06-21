@@ -4,6 +4,7 @@ const batch = require("./batch.js");
 const data = require("./data.json");
 let availableData = data;
 let usedData = [];
+let latest = [];
 
 class Grid {
   constructor(columns, rows, gutter) {
@@ -18,11 +19,11 @@ class Grid {
 };
 
 class Cell {
-  constructor() {
-    this.datum = getRandomCell();
+  constructor(obj) {
+    this.datum = obj ? obj : getRandomCell();
     this.title = this.datum.title;
     this.key = this.datum.id;
-    this.image = this.datum.url;
+    this.image = this.datum.img;
     this.url = this.datum.youtube
     this.height = height / grid.rows;
     this.width = width / grid.columns;
@@ -30,7 +31,7 @@ class Cell {
   };
 };
 
-const grid = new Grid('',3,2);
+const grid = new Grid(4,3,2);
 
 let canvas = $("#canvas"),
 height = canvas.innerHeight(),
@@ -42,6 +43,7 @@ width = canvas.innerWidth();
 
 ( //Render Grid
   function() {
+    getLatestData()
     let mql = window.matchMedia('(max-width: 600px)');
     if (mql.matches) {
       grid.columns = 1;
@@ -49,7 +51,8 @@ width = canvas.innerWidth();
       grid.columns = 4;
     }
     for (var i = 0; i <= grid.cells -1; i++) {
-      addCell(i);
+      let cell = getRandomCell()
+      addCell(cell);
     };
   }()
 );
@@ -71,8 +74,8 @@ function updateGrid() {
   updateCellSize();
 };
 
-function addCell(i) {
-  const cell = new Cell();
+function addCell(obj) {
+  const cell = new Cell(obj);
   const prevData = grid.data;
   const newData = prevData.push(cell);
   canvas.append(`
@@ -89,7 +92,7 @@ function addCell(i) {
       <div class="nucleus"
         style="
         border-width:${grid.gutter}px;
-        background-image:url(${cell.image});
+        background-image:url('${cell.image}');
         "
       >
       </div>
@@ -105,7 +108,34 @@ function removeCells() {
   canvas.children().last().detach();
   usedData.splice(index,1);
   availableData.push(removedCell);
+  console.log(removedCell)
 };
+
+function refreshAllCells() {
+  for (var i = grid.cells - 1; i >= 0; i--) {
+    removeCells()
+  }
+  for (var i = grid.cells - 1; i >= 0; i--) {
+    addCell()
+  }
+}
+
+function setLatestData() {
+  for (var i = grid.cells - 1; i >= 0; i--) {
+    removeCells()
+  }
+  for (var i = 0; i <= grid.cells - 1; i++) {
+    usedData.push(latest[i])
+    availableData.splice(i,1);
+    addCell(latest[i])
+  }
+}
+
+function getLatestData() {
+  for (var i = 0; i <= grid.cells - 1; i++) {
+    latest.push(data[i])
+  }
+}
 
 function getRandomCell() {
   const index = Math.floor(Math.random()*availableData.length),
@@ -126,7 +156,6 @@ function getRandomColor() {
 
   return color;
 };
-
 
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // ||| INTERACTION |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -177,6 +206,15 @@ $("#close").click(function(e) {
 })
 $("#menu").click(function(e) {
   $("#tool").toggleClass("hidden")
+})
+$("#refreshAllCells").click(function(e){
+  refreshAllCells()
+})
+$("#random").click(function(e){
+  refreshAllCells()
+})
+$("#latest").click(function(e){
+  setLatestData()
 })
 $("#details").click(function(e) {
   const gridData = grid.data.map(p => `<li><p>${p.key}</p></li>`).join('')
