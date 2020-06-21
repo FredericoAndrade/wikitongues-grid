@@ -43,7 +43,7 @@ width = canvas.innerWidth();
 
 ( //Render Grid
   function() {
-    getLatestData()
+    getLatestDataHelper()
     let mql = window.matchMedia('(max-width: 600px)');
     if (mql.matches) {
       grid.columns = 1;
@@ -56,6 +56,13 @@ width = canvas.innerWidth();
     };
   }()
 );
+
+// Create latest data array
+function getLatestDataHelper() {
+  for (var i = 0; i <= grid.cells - 1; i++) {
+    latest.push(data[i])
+  }
+}
 
 function updateGrid() {
   let currGridLen = canvas.children().length,
@@ -108,10 +115,9 @@ function removeCells() {
   canvas.children().last().detach();
   usedData.splice(index,1);
   availableData.push(removedCell);
-  console.log(removedCell)
 };
 
-function refreshAllCells() {
+function randomizeAllCells() {
   for (var i = grid.cells - 1; i >= 0; i--) {
     removeCells()
   }
@@ -128,12 +134,6 @@ function setLatestData() {
     usedData.push(latest[i])
     availableData.splice(i,1);
     addCell(latest[i])
-  }
-}
-
-function getLatestData() {
-  for (var i = 0; i <= grid.cells - 1; i++) {
-    latest.push(data[i])
   }
 }
 
@@ -201,22 +201,28 @@ $(document).on("keydown", function(event) {
 $("#wrapper").click(function(e) {
   e.target.id === "modalWrapper" ? $("#wrapper #modalWrapper").remove() : undefined
 });
+
 $("#close").click(function(e) {
   $("#tool").toggleClass("hidden")
 })
+
 $("#menu").click(function(e) {
   $("#tool").toggleClass("hidden")
 })
+
 $("#random").click(function(e){
-  refreshAllCells()
+  randomizeAllCells()
 })
+
 $("#latest").click(function(e){
   setLatestData()
 })
+
 $(".borderColor").click(function(e){
   $("#canvas").css("border-color",e.target.id)
   $(".nucleus").css("border-color",e.target.id)
 })
+
 $("#details").click(function(e) {
   const gridData = grid.data.map(p => `<li><p>${p.key}</p></li>`).join('')
   $("#gridSize").parent().after(`

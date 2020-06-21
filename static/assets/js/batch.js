@@ -7,7 +7,7 @@ const batch = (max, single) => {
 
   base('🍩 Oral Histories').select({
     maxRecords: max,
-    view: "FredsTestView",
+    view: "GridAppView",
     sort: [{field: "Youtube Publish Date", direction: "desc"}],
     // cellFormat: "string",
     // timeZone: "America/New_York",
@@ -20,10 +20,11 @@ const batch = (max, single) => {
       const img = record.fields["Raw Thumbnail"]
       const thumbnail = img != undefined ? img[0].thumbnails : img ;
       const thumbnail_url = thumbnail != undefined ? thumbnail.large.url : thumbnail ;
-      const id = record.fields["Identifier"]
-      const yt = record.fields["Youtube ID"]
-      const title = record.fields["Title"]
-      const object = {id:id,title:title,youtube:yt,img:thumbnail_url}
+      const id = record.fields["Identifier"];
+      const yt = record.fields["Youtube ID"];
+      const title = record.fields["Title"];
+      // const description = record.fields["Description"];
+      const object = {id:id,title:title,youtube:yt,img:thumbnail_url};
       payload.push(object)
     });
 
