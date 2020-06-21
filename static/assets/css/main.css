@@ -222,13 +222,31 @@ span.icon.column:last-of-type,
 span.icon.row:last-of-type {
   margin-right: 4px;
 }
-#latest, #random {
+#controls {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 0;
+  right: 0;
+  border-radius: 4px 0 0 0;
+  background-color: white;
 }
+#controls p {
+  font-size: .6rem;
+  float: left;
+  margin: 8px;
+}
+#latest,
 #random {
-  right: 40px;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  margin: auto;
+  display: block;
+  cursor: pointer;
+  float: left;
+  background-color: white;
+}
+#controls button:hover {
+  color: #0059ff;
 }
 #close{
   display: inline-block;
