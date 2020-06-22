@@ -11,6 +11,7 @@ class Grid {
     this.columns = columns,
     this.rows = rows;
     this.border = border;
+    this.borderColor = white;
     this.data = [];
   };
   get cells() {
@@ -99,6 +100,7 @@ function addCell(obj) {
       <div class="nucleus"
         style="
         border-width:${grid.border}px;
+        border-color:${grid.borderColor};
         background-image:url('${cell.image}');
         "
       >
@@ -219,8 +221,10 @@ $("#latest").click(function(e){
 })
 
 $(".borderColor").click(function(e){
-  $("#canvas").css("border-color",e.target.id)
-  $(".nucleus").css("border-color",e.target.id)
+  const color = e.target.id;
+  grid.borderColor = color;
+  $("#canvas").css("border-color",color);
+  $(".nucleus").css("border-color",color);
 })
 
 $("#details").click(function(e) {
