@@ -1,8 +1,9 @@
 "use strict";
 
 const batch = require("./batch.js");
-const data = require("./data.json");
-let availableData = data;
+const rawData = require("./data.json");
+// ES6 syntax below duplicates array instead of simply assigning a new variable name.
+let availableData = [...rawData];
 let usedData = [];
 let latest = [];
 
@@ -61,7 +62,7 @@ width = canvas.innerWidth();
 // Create latest data array
 function getLatestDataHelper() {
   for (var i = 0; i <= grid.cells - 1; i++) {
-    latest.push(data[i])
+    latest.push(rawData[i])
   }
 }
 
@@ -110,8 +111,8 @@ function addCell(obj) {
 };
 
 function removeCells() {
-  const t = canvas.children().last().attr("data"),
-  index = usedData.map(p => p.id).indexOf(t),
+  const target = canvas.children().last().attr("data"),
+  index = usedData.map(p => p.id).indexOf(target),
   removedCell = usedData[index];
 
   canvas.children().last().detach();
@@ -133,7 +134,7 @@ function setLatestData() {
     removeCells()
   }
   for (var i = 0; i <= grid.cells - 1; i++) {
-    usedData.push(latest[i])
+    usedData.push(rawData[i])
     availableData.splice(i,1);
     addCell(latest[i])
   }
@@ -177,8 +178,17 @@ function updateCellSize() {
 window.onresize = reportWindowSize;
 
 $("input").change(function(e){
-  grid[e.target.id] = Number(this.value);
-  updateGrid();
+  const target = e.target
+  const preChange = grid[target.id]
+  grid[target.id] = Number(this.value);
+  if (rawData.length >= grid.cells) {
+    updateGrid();
+  } else {
+    target.value = preChange;
+    alert("Error. Not enough additional data to display.")
+    grid[target.id] = preChange;
+  }
+
   $(".nucleus").css("border-width",`${grid.border}px`);
   $("input#gridSize").val(grid.cells);
 })
