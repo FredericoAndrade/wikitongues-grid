@@ -110,6 +110,11 @@ function addCell(obj) {
   `);
 };
 
+// pass in an arbitrary set of ids and load the appropriate grid
+function loadGrid() {
+  const data = ["Alessandro_20170421_lij", "Lorenzo_20130202_quc", "Sorcha_20140828_gle", "Martha_20151013_ayr", "Nastya_20150609_deu+fra+rus+ces+eng", "Joshi_20131201_epo", "Lee_20130706_eng", "Leo_20191210_fuf+fra", "Rosemary_20150113_gla", "Jamal_20200412_shi", "Mustafa+Gulnisa+Elise_20190306_uig", "Leslie_20140209_eng"]
+}
+
 function removeCells() {
   const target = canvas.children().last().attr("data"),
   index = usedData.map(p => p.id).indexOf(target),
@@ -200,34 +205,52 @@ $(document).on("mouseover", ".cell", function(e) {
   document.querySelector("#title").textContent = title;
 })
 
+$(document).on("mouseover", "#controls", function(e) {
+  document.querySelector("#title").textContent = "";
+})
+
 $(document).on("click", ".nucleus", function(e) {
   const url = $(e.target).parent().attr("data-url");
-  const iframe = `<div id="modalWrapper"><div id="modal"><iframe id="iframe" width="560" height="315" src="https://www.youtube.com/embed/${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>`;
-  $("#wrapper").append(iframe);
+  const iframe = `
+    <div id="modalWrapper">
+      <div id="modal">
+        <button class="close" data-for="modalWrapper">
+          <span class="background"></span>
+        </button>
+        <iframe id="iframe" width="560" height="315" src="https://www.youtube.com/embed/${url}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" controls=0 modestbranding=1 allowfullscreen>
+        </iframe>
+      </div>
+    </div>`;
+  $("#wrapper").after(iframe);
 });
+
+function closeModal () {
+  $("#modalWrapper").remove();
+}
 
 $(document).on("keydown", function(event) {
- event.key === "Escape" ? $("#wrapper #modalWrapper").remove() : undefined
+ event.key === "Escape" ? closeModal() : undefined;
 });
 
-$("#wrapper").click(function(e) {
-  e.target.id === "modalWrapper" ? $("#wrapper #modalWrapper").remove() : undefined
+$(document).click(function(e) {
+  e.target.id === "modalWrapper" ? closeModal() : undefined;
 });
 
-$("#close").click(function(e) {
-  $("#tool").toggleClass("hidden")
+$(document).on("click", ".close", function(e) {
+  const target = $(e.target).attr("data-for");
+  target === "modalWrapper" ? closeModal() : $(`#${target}`).toggleClass("hidden");
 })
 
 $("#menu").click(function(e) {
-  $("#tool").toggleClass("hidden")
+  $("#tool").toggleClass("hidden");
 })
 
 $("#random").click(function(e){
-  randomizeAllCells()
+  randomizeAllCells();
 })
 
 $("#latest").click(function(e){
-  setLatestData()
+  setLatestData();
 })
 
 $(".borderColor").click(function(e){
@@ -243,7 +266,12 @@ $("#details").click(function(e) {
     <ol id="gridData">${gridData}</ol>
     `)
 })
-$()
+
+// $("#metadata").on("click", function() {
+//   let test = grid.data.map(p => p.key)
+//   console.log(grid.data)
+//   test = []
+// })
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // ||| DIAGNOSTICS |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 // |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
