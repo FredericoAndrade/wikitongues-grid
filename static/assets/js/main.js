@@ -12,7 +12,8 @@ class Grid {
     this.columns = columns,
     this.rows = rows;
     this.border = border;
-    this.borderColor = white;
+    this.borderColor = "white";
+    this.context = "random";
     this.data = [];
   };
   get cells() {
@@ -33,7 +34,7 @@ class Cell {
   };
 };
 
-const grid = new Grid(4,3,2);
+const grid = new Grid(2,2,2);
 
 let canvas = $("#canvas"),
 height = canvas.innerHeight(),
@@ -50,12 +51,13 @@ width = canvas.innerWidth();
     if (mql.matches) {
       grid.columns = 1;
     } else {
-      grid.columns = 4;
+      grid.columns = 2;
     }
     for (var i = 0; i <= grid.cells -1; i++) {
       let cell = getRandomCell()
       addCell(cell);
     };
+    console.log(rawData.length)
   }()
 );
 
@@ -67,18 +69,23 @@ function getLatestDataHelper() {
 }
 
 function updateGrid() {
+  const context = grid.context;
   let currGridLen = canvas.children().length,
   targetGridLen = grid.cells,
   diff = targetGridLen - currGridLen;
 
   if( diff > 0 ) {
-    for (var i = 0; i <= diff - 1; i++) {
-      addCell();
+    for (var i = currGridLen; i <= targetGridLen - 1; i++) {
+      if (context === "latest") {
+        addCell(rawData[i]);
+      } else {
+        addCell();
+      }
     };
   } else if ( diff < 0 ) {
-    for (var i = 0; i <= (diff * -1) - 1; i++) {
+    for (var i = (diff * -1) - 1; i >= 0; i--) {
       removeCells();
-    };
+    }
   };
   updateCellSize();
 };
@@ -111,32 +118,54 @@ function addCell(obj) {
 };
 
 function removeCells() {
+  console.log("removing each")
   const target = canvas.children().last().attr("data"),
   index = usedData.map(p => p.id).indexOf(target),
   removedCell = usedData[index];
 
-  canvas.children().last().detach();
+  console.log("target: ",target)
+  console.log($(canvas.children(`[data]=${target}`)))
+  canvas.children().last().remove();
   usedData.splice(index,1);
   availableData.push(removedCell);
 };
 
 function randomizeAllCells() {
+  console.log("randomizing all cells")
+  console.log("setup; u:", usedData.length,"  a:", availableData.length)
+  console.log("steps: ",grid.cells)
+  const limit = grid.cells <= usedData.length ? grid.cells : usedData.length
+  // while(usedData.length > 0) {
+    console.log("removing")
+    for (var i = limit - 1; i >= 0; i--) {
+      console.log("  i:",i,"  u:", usedData.length,"  a:", availableData.length)
+      removeCells()
+    }
+  // }
+  console.log("reset; u:", usedData.length,"  a:", availableData.length)
+  console.log("adding")
   for (var i = grid.cells - 1; i >= 0; i--) {
-    removeCells()
-  }
-  for (var i = grid.cells - 1; i >= 0; i--) {
+    console.log("  i:",i,"  u:", usedData.length,"  a:", availableData.length)
+    // console.log("a:", availableData.length)
     addCell()
   }
 }
-
 function setLatestData() {
-  for (var i = grid.cells - 1; i >= 0; i--) {
+  console.log("setting latest data")
+  console.log("setup; u:", usedData.length,"  a:", availableData.length)
+  console.log("steps: ",grid.cells)
+  console.log("removing")
+  for (var i = 0; i <= grid.cells - 1; i++) {
+    console.log("  i:",i,"  u:", usedData.length,"  a:", availableData.length)
     removeCells()
   }
+  console.log("reset; u:", usedData.length,"  a:", availableData.length)
+  console.log("adding")
   for (var i = 0; i <= grid.cells - 1; i++) {
     usedData.push(rawData[i])
     availableData.splice(i,1);
-    addCell(latest[i])
+    addCell(rawData[i])
+    console.log("  i:",i,"  u:", usedData.length,"  a:", availableData.length)
   }
 }
 
@@ -145,6 +174,8 @@ function getRandomCell() {
   cell = availableData[index];
   usedData.push(cell);
   availableData.splice(index,1);
+  // console.log("u:", usedData.length)
+  // console.log("a:", availableData.length)
 
   return cell;
 };
@@ -182,6 +213,7 @@ $("input").change(function(e){
   const preChange = grid[target.id]
   grid[target.id] = Number(this.value);
   if (rawData.length >= grid.cells) {
+    console.log("updating")
     updateGrid();
   } else {
     target.value = preChange;
@@ -223,10 +255,12 @@ $("#menu").click(function(e) {
 })
 
 $("#random").click(function(e){
+  grid.context = "random"
   randomizeAllCells()
 })
 
 $("#latest").click(function(e){
+  grid.context = "latest"
   setLatestData()
 })
 
